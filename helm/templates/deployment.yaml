@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-api
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: search-api
+  template:
+    metadata:
+      labels:
+        app: search-api
+    spec:
+      containers:
+        - name: search-api
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: 8000
+          env:
+            - name: PAGERDUTY_ROUTING_KEY
+              value: "{{ .Values.env.PAGERDUTY_ROUTING_KEY }}"
